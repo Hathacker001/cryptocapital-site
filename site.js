@@ -1,7 +1,9 @@
 const app = document.querySelector('#app');
 const notice = document.querySelector('#notice');
 const route = window.location.pathname.replace(/\/$/, '') || '/';
-const demoSessionKey = 'isClientAuthenticated';
+// Fictional front-end visual review only. No backend, financial API, or payment service is connected.
+const authFlag = 'isClientAuthenticated';
+const mockAccess = { id: 'cc-847691', passcode: '5643388' };
 
 const header = (active = '') => `
   <header class="site-header">
@@ -110,7 +112,7 @@ const homePage = () => `${header('home')}
         <div class="faq-list">
           <details open><summary>What is the minimum investment?</summary><p class="faq-answer">Positions begin at $5,000. Larger allocations are structured individually with our desk.</p></details>
           <details><summary>Can I withdraw at any time?</summary><p class="faq-answer">Withdrawal terms depend on the selected mandate. Review the applicable terms and risk disclosures before making an investment decision.</p></details>
-          <details><summary>How do the cards work?</summary><p class="faq-answer">The cards are presented here as a visual concept only; no balance, payment or card service is connected in this recreation.</p></details>
+          <details><summary>How do the cards work?</summary><p class="faq-answer">Spend from your CryptoCapital balance, set limits, and freeze your card any time from your account.</p></details>
         </div>
       </div>
     </section>
@@ -132,85 +134,105 @@ const cardsPage = () => `${header('cards')}
 const loginPage = () => `${header('login')}
   <main class="login-page"><section class="login-panel" aria-labelledby="login-title">
     <h1 id="login-title">Client Login</h1><p class="login-subtitle">Private client portal</p>
-    <span class="login-label">Account ID</span><div class="mock-input" aria-label="Demo account ID field, disabled">CC-0000-0000</div>
-    <span class="login-label">Passcode</span><div class="mock-input mock-input--secret" aria-label="Demo passcode field, disabled">••••••••••</div>
-    <button class="button button--lime login-button" type="button" data-demo-login>Enter demo dashboard <span aria-hidden="true">→</span></button>
-    <p class="login-demo">Demo preview · no account credentials needed</p><p class="login-note">This visual prototype does not authenticate users or accept credentials.</p>
+    <form class="login-form" data-login-form novalidate>
+      <label class="login-label" for="login-id">Account ID</label><input class="login-input" id="login-id" name="accountId" type="text" placeholder="CC-0000-0000" autocomplete="username" />
+      <label class="login-label" for="login-passcode">Passcode</label><input class="login-input" id="login-passcode" name="passcode" type="password" placeholder="Enter your passcode" autocomplete="current-password" />
+      <p class="login-error" data-login-error role="alert" aria-live="polite"></p>
+      <button class="button button--lime login-button" type="submit" data-login-submit>Enter dashboard <span aria-hidden="true">→</span></button>
+    </form>
   </section></main>`;
 
-const dashboardHeader = (active = 'dashboard') => `
-  <header class="site-header dashboard-header">
-    <div class="header-inner">
-      <a class="brand" href="/" aria-label="CryptoCapital home"><span class="brand-mark">CC</span><span>CryptoCapital</span></a>
-      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
-      <nav class="main-nav" aria-label="Dashboard navigation">
-        <a href="/dashboard" ${active === 'dashboard' ? 'aria-current="page"' : ''}>Overview</a>
-        <a href="/dashboard#activity">Activity</a>
-        <a href="/settings" ${active === 'settings' ? 'aria-current="page"' : ''}>Settings</a>
-      </nav>
-      <button class="button button--outline header-action" type="button" data-demo-signout>Sign out</button>
+const dashboardHeader = () => `
+  <header class="dashboard-topbar">
+    <div class="dashboard-topbar-inner">
+      <div class="dashboard-heading"><span>Hi, Eliana</span><h1>Welcome back, Eliana.</h1><p>Good morning</p></div>
+      <nav class="portal-nav" aria-label="Account navigation"><a href="/settings">Settings</a><button type="button" data-signout>Sign out</button></nav>
     </div>
   </header>`;
 
-const demoNotice = `<div class="demo-banner" role="note"><span class="demo-banner-mark">DEMO</span><span><strong>Simulation only.</strong> All balances, yield figures, identity status and activity are fictional interface data. No funds, investment, wallet connection or transaction exists.</span></div>`;
+const activityRows = () => `
+  <tr><td>Oct 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$25,005.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+  <tr><td>Sep 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,755.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+  <tr><td>Aug 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,510.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+  <tr><td>Jul 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,268.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+  <tr><td>Jun 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,030.00</td><td><span class="complete-status">COMPLETED</span></td></tr>`;
 
-const dashboardPage = () => `${dashboardHeader('dashboard')}
-  <main class="dashboard-page"><div class="dashboard-wrap">
-    <div class="dashboard-welcome"><div><p class="section-label">CLIENT PORTAL / OVERVIEW</p><h1>Welcome back, Eliana.</h1><p>Your private account at a glance.</p></div><span class="demo-profile-pill">SAMPLE PROFILE</span></div>
-    ${demoNotice}
-    <section class="dashboard-metrics" aria-label="Sample account metrics">
-      <article class="dash-metric dash-metric--primary"><span>Total balance <i>DEMO</i></span><strong>$2,500,500.00</strong><small>Illustrative value only</small></article>
-      <article class="dash-metric"><span>Savings balance</span><strong>$100,000.00</strong><small class="positive">+1.00% daily interest <em>illustrative</em></small></article>
-      <article class="dash-metric"><span>Approved withdrawal</span><strong>$50,000.00</strong><small>Sample status · ready to disburse</small></article>
-      <article class="dash-metric"><span>Pending withdrawal</span><strong>$500,000.00</strong><small>Fictional batch · processing</small></article>
-    </section>
-    <section class="dashboard-main-grid">
-      <article class="dash-panel balance-panel">
-        <div class="dash-panel-heading"><div><p class="section-label">MAIN ACCOUNT</p><h2>Portfolio balance</h2></div><span class="tiny-status">DEMO DATA</span></div>
-        <p class="balance-caption">Total account value</p><strong class="dash-total">$2,500,500<span>.00</span></strong>
-        <p class="balance-change">+$25,005.00 <span>+1.00% accrued today <i>sample rate</i></span></p>
-        <div class="yield-strip"><div><span>Illustrative rate</span><strong>+1.00% <small>RATE / DAY</small></strong></div><div><span>Sample accrual</span><strong>+$25,005.00 <small>ACCRUED TODAY</small></strong></div><div><span>Next sample accrual in</span><strong data-countdown>10:37:08</strong></div></div>
+const dashboardPage = () => `${dashboardHeader()}
+  <main class="dashboard-page"><div class="account-layout">
+    <section class="dashboard-main-column" aria-label="Account overview">
+      <article class="account-balance-card">
+        <div class="account-balance-top"><span>Total balance</span><span class="account-chip" aria-hidden="true"></span></div>
+        <strong class="account-balance-value">$2,500,500.00</strong>
+        <p class="account-balance-meta">Account ·••• 8823 <span>▲ +1.78% this month</span></p>
+        <div class="account-accrual"><strong>+$25,005.00</strong><span>+1.00% accrued today</span></div>
       </article>
-      <article class="dash-panel allocation-panel">
-        <div class="dash-panel-heading"><div><p class="section-label">SAMPLE MIX</p><h2>Allocation</h2></div><span class="tiny-status">SIMULATED</span></div>
-        <div class="allocation-content"><div class="allocation-donut" role="img" aria-label="Sample allocation: 55 percent digital asset growth, 30 percent private market entries, 15 percent defensive yield"><span>DEMO<small>ALLOCATION</small></span></div><ul class="allocation-legend"><li><i class="legend-growth"></i><span>Digital Asset Growth</span><b>55%</b></li><li><i class="legend-private"></i><span>Private Market Entries</span><b>30%</b></li><li><i class="legend-yield"></i><span>Defensive Yield</span><b>15%</b></li></ul></div>
+      <nav class="dashboard-actions" aria-label="Account actions">
+        <button type="button" data-action-notice="Send"><span>↗</span>Send</button>
+        <button type="button" data-action-notice="Add money"><span>＋</span>Add money</button>
+        <a href="#withdrawal"><span>↙</span>Withdraw</a>
+      </nav>
+      <section class="quick-metrics" aria-label="Account balances">
+        <article><span>Savings balance</span><strong>$100,000.00</strong><small>+1.00% daily interest</small></article>
+        <article><span>Approved withdrawal</span><strong>$50,000.00</strong><small>Ready to disburse</small></article>
+        <article><span>Pending withdrawal</span><strong>$500,000.00</strong><small>Batch withdrawal · processing</small></article>
+      </section>
+      <article class="reference-panel holdings-panel">
+        <div class="reference-panel-heading"><h2>Holdings</h2><span>Daily yield</span></div>
+        <div class="holding-row"><div class="holding-label"><span>Digital Asset Growth</span><strong>$1,375,275.00 <em>+28.9%</em></strong></div><div class="holding-track"><span style="width:55%"></span></div></div>
+        <div class="holding-row"><div class="holding-label"><span>Private Market Entries</span><strong>$750,150.00 <em>+21.3%</em></strong></div><div class="holding-track"><span style="width:30%"></span></div></div>
+        <div class="holding-row"><div class="holding-label"><span>Defensive Yield</span><strong>$375,075.00 <em>+8.4%</em></strong></div><div class="holding-track"><span style="width:15%"></span></div></div>
+        <div class="yield-summary"><div><span>Daily yield accrual</span><strong>+1.00% <small>RATE / DAY</small></strong></div><div><span>Accrued today</span><strong>+$25,005.00</strong></div><div><span>Next accrual in</span><strong data-countdown>10:37:08</strong></div></div>
       </article>
-      <article class="dash-panel withdrawal-panel">
-        <div class="dash-panel-heading"><div><p class="section-label">DEMO CONTROLS</p><h2>Withdrawal preview</h2></div><span class="tiny-status">PREVIEW ONLY</span></div>
-        <p class="withdraw-copy">This example screen displays an amount as available for immediate withdrawal. No wallet is connected in this prototype, and it cannot send funds.</p>
-        <label class="withdraw-label" for="withdraw-amount">Sample amount (USD)</label><div class="withdraw-input-wrap"><span>$</span><input id="withdraw-amount" type="number" min="0" placeholder="Enter a demo amount" inputmode="decimal" aria-label="Sample withdrawal amount in US dollars" /></div>
-        <div class="amount-options" aria-label="Sample amount shortcuts"><button type="button" data-amount="10000">$10,000</button><button type="button" data-amount="25000">$25,000</button><button type="button" data-amount="50000">$50,000</button><button type="button" data-amount="2500500">Full balance</button></div>
-        <div class="wallet-readonly"><span><small>Wallet status · not connected</small><strong>Demo address hidden</strong></span><b>SIMULATION</b></div>
-        <button class="button button--lime withdrawal-action" type="button" data-demo-withdraw>Request withdrawal <span aria-hidden="true">→</span></button>
-        <div class="batch-note"><span class="batch-dot"></span><span><strong>Example batch item · not a real request</strong><small>Reference B-1042 · sample next-cycle settlement · $500,000.00</small></span></div>
-      </article>
-      <article class="dash-panel activity-panel" id="activity">
-        <div class="dash-panel-heading"><div><p class="section-label">ACCOUNT HISTORY</p><h2>Recent activity</h2></div><span class="tiny-status">YIELD EXAMPLES</span></div>
-        <div class="activity-table-wrap"><table class="activity-table"><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>
-          <tr><td>Oct 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$25,005.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
-          <tr><td>Sep 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,755.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
-          <tr><td>Aug 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,510.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
-          <tr><td>Jul 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,268.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
-          <tr><td>Jun 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,030.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
-        </tbody></table></div><p class="table-footnote">Yield entries are fictional samples. A WITHDRAWAL · DEMO row is a local preview only—not a submitted request. No deposits are represented.</p>
+      <article class="reference-panel recent-activity" id="activity">
+        <div class="reference-panel-heading"><h2>Recent activity</h2><a href="#activity">View all <span aria-hidden="true">→</span></a></div>
+        <div class="activity-table-wrap"><table class="activity-table"><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>${activityRows()}</tbody></table></div>
       </article>
     </section>
+    <aside class="dashboard-side-column" aria-label="Cards and withdrawals">
+      <article class="reference-panel my-cards-panel">
+        <div class="reference-panel-heading"><h2>My cards</h2><span class="card-menu-dots" aria-hidden="true">•••</span></div>
+        <div class="dashboard-card-stage"><div data-dashboard-card>${paymentCard('regular', 'Regular')}</div></div>
+        <div class="card-tier-switcher" role="group" aria-label="Choose card"><button type="button" data-card-tier="regular" aria-pressed="true">Regular</button><button type="button" data-card-tier="premium" aria-pressed="false">Premium</button><button type="button" data-card-tier="black" aria-pressed="false">Black</button></div>
+        <button class="freeze-card-button" type="button" data-freeze-card>Freeze card</button>
+        <div class="cashback-card"><strong>Get 5% cashback</strong><p>Upgrade to Black for the highest rewards.</p><button type="button" data-upgrade-black>Explore Black <span aria-hidden="true">→</span></button></div>
+      </article>
+      <article class="reference-panel withdrawal-panel" id="withdrawal">
+        <div class="reference-panel-heading"><h2>Withdraw</h2><span class="withdrawal-state">CONNECTED</span></div>
+        <p class="withdraw-copy">This amount is available for immediate withdrawal to your linked wallet address.</p>
+        <label class="withdraw-label" for="withdraw-amount">Amount (USD)</label>
+        <div class="withdraw-input-wrap"><span>$</span><input id="withdraw-amount" type="number" min="0" placeholder="0.00" inputmode="decimal" aria-label="Withdrawal amount in US dollars" /></div>
+        <div class="amount-options" aria-label="Choose amount"><button type="button" data-amount="10000">$10,000</button><button type="button" data-amount="25000">$25,000</button><button type="button" data-amount="50000">$50,000</button><button type="button" data-amount="2500500">Full balance</button></div>
+        <div class="wallet-readonly"><span><small>Linked wallet · Base Wallet</small><strong>bc1qtdqwxwygmamf5ttdjpu68gs0x5wjc6qpq0cfx2</strong></span><b>CONNECTED</b></div>
+        <button class="button button--lime withdrawal-action" type="button" data-withdrawal>Request Withdrawal <span aria-hidden="true">→</span></button>
+        <div class="batch-note"><span class="batch-dot"></span><span><strong>Batch withdrawal in progress</strong><small>Reference B-1042 · settles with next batch cycle · $500,000.00</small></span></div>
+      </article>
+    </aside>
   </div>${footer()}</main>`;
 
-const settingsPage = () => `${dashboardHeader('settings')}
-  <main class="dashboard-page settings-page"><div class="dashboard-wrap">
-    <div class="dashboard-welcome"><div><p class="section-label">CLIENT PORTAL / SETTINGS</p><h1>Profile & settings.</h1><p>Sample verification status for this interface prototype.</p></div><span class="demo-profile-pill">SAMPLE PROFILE</span></div>
-    ${demoNotice}
-    <section class="settings-grid"><article class="dash-panel identity-panel"><div class="dash-panel-heading"><div><p class="section-label">IDENTITY</p><h2>Verification status</h2></div><span class="verified-pill">VERIFIED · DEMO</span></div><p class="settings-explainer">This is a fictional status card for layout review only. No identity document or personal identifier is stored or displayed.</p><div class="identity-placeholder"><span class="identity-icon">CC</span><span><strong>Sample client profile</strong><small>Personal document fields omitted from this preview</small></span></div><dl class="settings-list"><div><dt>Profile</dt><dd>Demo client</dd></div><div><dt>Verification</dt><dd>Verified · sample status only</dd></div><div><dt>Access ID</dt><dd>Hidden in prototype</dd></div><div><dt>Security</dt><dd>No real credentials are used</dd></div></dl></article><article class="dash-panel preferences-panel"><div class="dash-panel-heading"><div><p class="section-label">PREFERENCES</p><h2>Account controls</h2></div></div><a class="settings-link" href="/dashboard"><span><strong>Overview</strong><small>Return to the sample dashboard</small></span><b>→</b></a><button class="settings-signout" type="button" data-demo-signout><span><strong>Sign out</strong><small>Clear this browser's demo session</small></span><b>↗</b></button></article></section>
+const settingsPage = () => `${dashboardHeader()}
+  <main class="dashboard-page settings-page"><div class="settings-layout">
+    <div class="settings-page-heading"><p class="section-label">ACCOUNT SETTINGS</p><h2>Profile & identity verification</h2><p>Manage your personal information and account details.</p></div>
+    <section class="reference-panel identity-card">
+      <div class="identity-card-heading"><div class="identity-avatar">EC</div><div><p>Identity verification</p><h3>CARRENO, ELIANA</h3></div><span class="verified-pill"><i aria-hidden="true">✓</i> VERIFIED</span></div>
+      <dl class="identity-details">
+        <div><dt>Full Name</dt><dd>CARRENO, ELIANA</dd></div><div><dt>License Number</dt><dd>C650-2099-1782</dd></div>
+        <div><dt>State</dt><dd>ILLINOIS</dd></div><div><dt>Date of Birth</dt><dd>06/27/1991</dd></div>
+        <div><dt>Expiration Date</dt><dd>06/27/2029</dd></div><div><dt>Issue Date</dt><dd>11/07/2025</dd></div>
+        <div><dt>Sex</dt><dd>F</dd></div><div><dt>Class</dt><dd>DM</dd></div>
+        <div><dt>Login Access ID</dt><dd>cc-847691</dd></div>
+      </dl>
+      <div class="identity-card-footer"><span>Profile status</span><strong><i></i> Verified</strong></div>
+    </section>
+    <a class="back-to-dashboard" href="/dashboard">← Back to dashboard</a>
   </div>${footer()}</main>`;
 
-if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(demoSessionKey) !== 'true') {
+if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(authFlag) !== 'true') {
   window.location.replace('/');
 } else if (route === '/dashboard') {
-  document.title = 'Demo Dashboard — CryptoCapital';
+  document.title = 'Dashboard — CryptoCapital';
   app.innerHTML = dashboardPage();
 } else if (route === '/settings') {
-  document.title = 'Demo Settings — CryptoCapital';
+  document.title = 'Settings — CryptoCapital';
   app.innerHTML = settingsPage();
 } else if (route === '/cards') {
   document.title = 'Cards — CryptoCapital';
@@ -241,22 +263,62 @@ const showNotice = (message, variant = 'success', duration = 3600) => {
   noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), duration);
 };
 
-document.querySelector('[data-demo-login]')?.addEventListener('click', () => {
-  const button = document.querySelector('[data-demo-login]');
-  if (!button || button.disabled) return;
+document.querySelector('[data-login-form]')?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const idInput = form.querySelector('#login-id');
+  const passInput = form.querySelector('#login-passcode');
+  const error = form.querySelector('[data-login-error]');
+  const button = form.querySelector('[data-login-submit]');
+  if (idInput.value !== mockAccess.id || passInput.value !== mockAccess.passcode) {
+    error.textContent = 'Account ID or passcode is incorrect. Please try again.';
+    error.classList.add('is-visible');
+    idInput.setAttribute('aria-invalid', 'true');
+    passInput.setAttribute('aria-invalid', 'true');
+    return;
+  }
+  error.textContent = '';
+  error.classList.remove('is-visible');
+  idInput.removeAttribute('aria-invalid');
+  passInput.removeAttribute('aria-invalid');
   button.disabled = true;
-  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Opening demo…';
+  button.setAttribute('aria-busy', 'true');
+  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Authenticating…';
   window.setTimeout(() => {
-    localStorage.setItem(demoSessionKey, 'true');
+    localStorage.setItem(authFlag, 'true');
     window.location.assign('/dashboard');
   }, 1500);
 });
 
-document.querySelectorAll('[data-demo-signout]').forEach((button) => {
+document.querySelectorAll('[data-signout]').forEach((button) => {
   button.addEventListener('click', () => {
-    localStorage.removeItem(demoSessionKey);
+    localStorage.removeItem(authFlag);
     window.location.assign('/');
   });
+});
+
+document.querySelectorAll('[data-action-notice]').forEach((button) => {
+  button.addEventListener('click', () => showNotice(`${button.dataset.actionNotice} is not available yet.`, 'success'));
+});
+
+const cardHolder = document.querySelector('[data-dashboard-card]');
+const selectCard = (tier) => {
+  const names = { regular: 'Regular', premium: 'Premium', black: 'Black' };
+  if (!cardHolder || !names[tier]) return;
+  cardHolder.innerHTML = paymentCard(tier, names[tier], tier === 'black' ? '◐◑' : 'VISA');
+  document.querySelectorAll('[data-card-tier]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.cardTier === tier));
+  });
+};
+document.querySelectorAll('[data-card-tier]').forEach((button) => {
+  button.addEventListener('click', () => selectCard(button.dataset.cardTier));
+});
+document.querySelector('[data-upgrade-black]')?.addEventListener('click', () => selectCard('black'));
+document.querySelector('[data-freeze-card]')?.addEventListener('click', (event) => {
+  const button = event.currentTarget;
+  const frozen = button.getAttribute('aria-pressed') === 'true';
+  button.setAttribute('aria-pressed', String(!frozen));
+  button.textContent = frozen ? 'Freeze card' : 'Unfreeze card';
 });
 
 document.querySelectorAll('[data-amount]').forEach((button) => {
@@ -266,30 +328,30 @@ document.querySelectorAll('[data-amount]').forEach((button) => {
   });
 });
 
-document.querySelector('[data-demo-withdraw]')?.addEventListener('click', (event) => {
+document.querySelector('[data-withdrawal]')?.addEventListener('click', (event) => {
   const button = event.currentTarget;
   const amountInput = document.querySelector('#withdraw-amount');
   const amount = Number(amountInput?.value);
   if (!Number.isFinite(amount) || amount <= 0) {
-    showNotice('Enter a sample amount to preview this withdrawal.', 'error');
+    showNotice('Enter an amount to continue.', 'error');
     amountInput?.focus();
     return;
   }
   if (button.disabled) return;
 
-  const originalLabel = 'Request withdrawal <span aria-hidden="true">→</span>';
+  const originalLabel = 'Request Withdrawal <span aria-hidden="true">→</span>';
   button.disabled = true;
-  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Processing demo…';
+  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Processing…';
   window.setTimeout(() => {
     const tableBody = document.querySelector('.activity-table tbody');
     if (tableBody) {
-      const sampleDate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-      const sampleAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
-      tableBody.insertAdjacentHTML('afterbegin', `<tr><td>${sampleDate}</td><td>Withdrawal request preview · no funds moved</td><td><span class="type-pill type-pill--withdrawal">WITHDRAWAL · DEMO</span></td><td class="yield-amount">−${sampleAmount}</td><td><span class="simulated-status">NOT SUBMITTED</span></td></tr>`);
+      const date = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+      const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
+      tableBody.insertAdjacentHTML('afterbegin', `<tr><td>${date}</td><td>Withdrawal request</td><td><span class="type-pill type-pill--withdrawal">WITHDRAWAL</span></td><td class="yield-amount">−${formattedAmount}</td><td><span class="pending-status">PENDING</span></td></tr>`);
     }
     button.disabled = false;
     button.innerHTML = originalLabel;
-    showNotice('Demo: Withdrawal Requested · no funds moved.', 'success', 4500);
+    showNotice('Withdrawal Requested', 'success', 4500);
   }, 2000);
 });
 
