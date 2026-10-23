@@ -176,7 +176,7 @@ const dashboardPage = () => `${dashboardHeader('dashboard')}
         <div class="allocation-content"><div class="allocation-donut" role="img" aria-label="Sample allocation: 55 percent digital asset growth, 30 percent private market entries, 15 percent defensive yield"><span>DEMO<small>ALLOCATION</small></span></div><ul class="allocation-legend"><li><i class="legend-growth"></i><span>Digital Asset Growth</span><b>55%</b></li><li><i class="legend-private"></i><span>Private Market Entries</span><b>30%</b></li><li><i class="legend-yield"></i><span>Defensive Yield</span><b>15%</b></li></ul></div>
       </article>
       <article class="dash-panel withdrawal-panel">
-        <div class="dash-panel-heading"><div><p class="section-label">DEMO CONTROLS</p><h2>Withdrawal preview</h2></div><span class="tiny-status">DISABLED</span></div>
+        <div class="dash-panel-heading"><div><p class="section-label">DEMO CONTROLS</p><h2>Withdrawal preview</h2></div><span class="tiny-status">PREVIEW ONLY</span></div>
         <p class="withdraw-copy">This example screen displays an amount as available for immediate withdrawal. No wallet is connected in this prototype, and it cannot send funds.</p>
         <label class="withdraw-label" for="withdraw-amount">Sample amount (USD)</label><div class="withdraw-input-wrap"><span>$</span><input id="withdraw-amount" type="number" min="0" placeholder="Enter a demo amount" inputmode="decimal" aria-label="Sample withdrawal amount in US dollars" /></div>
         <div class="amount-options" aria-label="Sample amount shortcuts"><button type="button" data-amount="10000">$10,000</button><button type="button" data-amount="25000">$25,000</button><button type="button" data-amount="50000">$50,000</button><button type="button" data-amount="2500500">Full balance</button></div>
@@ -192,7 +192,7 @@ const dashboardPage = () => `${dashboardHeader('dashboard')}
           <tr><td>Aug 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,510.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
           <tr><td>Jul 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,268.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
           <tr><td>Jun 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,030.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
-        </tbody></table></div><p class="table-footnote">Every row is fictional sample data; no deposits or withdrawals are represented.</p>
+        </tbody></table></div><p class="table-footnote">Yield entries are fictional samples. A WITHDRAWAL · DEMO row is a local preview only—not a submitted request. No deposits are represented.</p>
       </article>
     </section>
   </div>${footer()}</main>`;
@@ -233,9 +233,23 @@ toggle?.addEventListener('click', () => {
 });
 
 let noticeTimer;
+const showNotice = (message, variant = 'success', duration = 3600) => {
+  notice.textContent = message;
+  notice.classList.remove('notice--error', 'notice--success');
+  notice.classList.add(`notice--${variant}`, 'is-visible');
+  window.clearTimeout(noticeTimer);
+  noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), duration);
+};
+
 document.querySelector('[data-demo-login]')?.addEventListener('click', () => {
-  localStorage.setItem(demoSessionKey, 'true');
-  window.location.assign('/dashboard');
+  const button = document.querySelector('[data-demo-login]');
+  if (!button || button.disabled) return;
+  button.disabled = true;
+  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Opening demo…';
+  window.setTimeout(() => {
+    localStorage.setItem(demoSessionKey, 'true');
+    window.location.assign('/dashboard');
+  }, 1500);
 });
 
 document.querySelectorAll('[data-demo-signout]').forEach((button) => {
@@ -252,11 +266,31 @@ document.querySelectorAll('[data-amount]').forEach((button) => {
   });
 });
 
-document.querySelector('[data-demo-withdraw]')?.addEventListener('click', () => {
-  notice.textContent = 'Demo only — no withdrawal was submitted and no funds were moved.';
-  notice.classList.add('is-visible');
-  window.clearTimeout(noticeTimer);
-  noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), 3600);
+document.querySelector('[data-demo-withdraw]')?.addEventListener('click', (event) => {
+  const button = event.currentTarget;
+  const amountInput = document.querySelector('#withdraw-amount');
+  const amount = Number(amountInput?.value);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    showNotice('Enter a sample amount to preview this withdrawal.', 'error');
+    amountInput?.focus();
+    return;
+  }
+  if (button.disabled) return;
+
+  const originalLabel = 'Request withdrawal <span aria-hidden="true">→</span>';
+  button.disabled = true;
+  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Processing demo…';
+  window.setTimeout(() => {
+    const tableBody = document.querySelector('.activity-table tbody');
+    if (tableBody) {
+      const sampleDate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+      const sampleAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
+      tableBody.insertAdjacentHTML('afterbegin', `<tr><td>${sampleDate}</td><td>Withdrawal request preview · no funds moved</td><td><span class="type-pill type-pill--withdrawal">WITHDRAWAL · DEMO</span></td><td class="yield-amount">−${sampleAmount}</td><td><span class="simulated-status">NOT SUBMITTED</span></td></tr>`);
+    }
+    button.disabled = false;
+    button.innerHTML = originalLabel;
+    showNotice('Demo: Withdrawal Requested · no funds moved.', 'success', 4500);
+  }, 2000);
 });
 
 const countdown = document.querySelector('[data-countdown]');
