@@ -38,6 +38,16 @@ const paymentCard = (kind, label, network = 'VISA') => `
 
 const homePage = () => `${header('home')}
   <main class="home-page">
+    <section class="cinematic-hero" aria-labelledby="cinematic-title">
+      <div class="cinematic-content">
+        <div class="cinematic-copy">
+          <span class="cinematic-tag">Private Investment Group · Est. 2016</span>
+          <h1 class="cinematic-title" id="cinematic-title"><span>CAPITAL,</span><span>PLACED WITH</span><em>PRECISION.</em></h1>
+          <p class="cinematic-subtext">We spot market opportunities ahead of consensus—leveraging deep institutional research and strategic allocation to secure optimal market positions for qualified investors.</p>
+          <div class="cinematic-actions"><a class="button button--lime" href="/login">Request access <span aria-hidden="true">-&gt;</span></a><a class="button button--outline" href="/cards">See the new cards</a></div>
+        </div>
+      </div>
+    </section>
     <section class="hero home-hero" aria-labelledby="hero-title">
       <div class="hero-content">
         <div class="hero-copy-column">
@@ -315,7 +325,7 @@ if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(au
 }
 
 const initializeHomepageMotion = async () => {
-  const elements = [...document.querySelectorAll('.home-page .hero-content > *, .home-page .section-inner > *, .home-page .hero-floating-tag, .home-page .proof-stat, .home-page .fund-chart-card, .home-page .about-row, .home-page .bank-card, .home-page .mandate-card, .home-page .process-card, .home-page .faq-list details, .home-page .final-cta, .home-footer-inner > *')];
+  const elements = [...document.querySelectorAll('.home-page .cinematic-copy > *, .home-page .cinematic-actions > *, .home-page .hero-content > *, .home-page .section-inner > *, .home-page .hero-floating-tag, .home-page .proof-stat, .home-page .fund-chart-card, .home-page .about-row, .home-page .bank-card, .home-page .mandate-card, .home-page .process-card, .home-page .faq-list details, .home-page .final-cta, .home-footer-inner > *')];
   if (!elements.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   let motionApi = null;

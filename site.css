@@ -827,3 +827,102 @@ button { font: inherit; }
   .fund-chart-line { stroke-dashoffset: 0; transition: none; }
   .fund-chart-area { opacity: 1; transition: none; }
 }
+
+
+/* Cinematic first-screen hero; reuses the existing CryptoCapital tower photo. */
+.cinematic-hero {
+  min-height: min(980px, 100svh);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: 156px max(36px, calc((100vw - var(--max)) / 2)) clamp(64px, 8vw, 104px);
+  background: #071604;
+}
+.cinematic-hero::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  content: '';
+  background-image: url('/manus-storage/cryptocapital-tower_4d7bfc27.jpg');
+  background-position: center 43%;
+  background-size: cover;
+  filter: none;
+  opacity: 1;
+  transform: scale(1.025);
+  animation: cinematic-image-entry 1.25s cubic-bezier(.2, .7, .15, 1) both;
+}
+.cinematic-hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: '';
+  background:
+    linear-gradient(90deg, rgba(4, 16, 2, .48) 0%, rgba(4, 16, 2, .27) 56%, rgba(4, 16, 2, .12) 100%),
+    linear-gradient(0deg, rgba(4, 16, 2, .57) 0%, rgba(4, 16, 2, .14) 58%, rgba(4, 16, 2, .17) 100%);
+}
+.cinematic-content { position: relative; z-index: 1; width: 100%; max-width: var(--max); margin: 0 auto; }
+.cinematic-copy { max-width: 1120px; }
+.cinematic-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 19px;
+  border: 1px solid rgba(201, 255, 0, .22);
+  border-radius: 999px;
+  color: var(--acid);
+  background: rgba(4, 18, 3, .88);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .005em;
+}
+.cinematic-title {
+  max-width: 1120px;
+  margin: 33px 0 25px;
+  color: var(--cream);
+  font-family: var(--display);
+  font-size: clamp(70px, 9.1vw, 126px);
+  font-style: italic;
+  font-weight: 700;
+  line-height: .84;
+  letter-spacing: -.082em;
+  text-transform: uppercase;
+  text-shadow: 0 4px 34px rgba(0, 0, 0, .2);
+}
+.cinematic-title span, .cinematic-title em { display: block; }
+.cinematic-title span { color: var(--cream); }
+.cinematic-title em { color: var(--acid); font-style: inherit; }
+.cinematic-subtext { max-width: 790px; margin: 0; color: #edf1e8; font-size: clamp(15px, 1.45vw, 19px); line-height: 1.65; text-shadow: 0 2px 22px rgba(0, 0, 0, .35); }
+.cinematic-actions { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 29px; }
+.cinematic-actions .button { min-height: 58px; padding: 0 25px; font-size: 15px; }
+.cinematic-actions .button--lime { color: #071302; background: var(--acid); }
+.cinematic-actions .button--outline { color: #fff; border-color: rgba(255, 255, 255, .48); background: rgba(5, 17, 4, .34); }
+.cinematic-actions .button--outline:hover { color: var(--acid); border-color: var(--acid); background: rgba(5, 17, 4, .62); }
+@keyframes cinematic-image-entry {
+  from { opacity: .78; transform: scale(1.045); }
+  to { opacity: 1; transform: scale(1.012); }
+}
+@media (max-width: 920px) {
+  .cinematic-hero { min-height: min(900px, 100svh); padding-right: 30px; padding-left: 30px; }
+  .cinematic-title { font-size: clamp(64px, 8.7vw, 94px); }
+}
+@media (max-width: 680px) {
+  .cinematic-hero { min-height: 100svh; align-items: center; padding: 122px 22px 55px; }
+  .cinematic-hero::before { background-position: center 45%; transform: scale(1.015); }
+  .cinematic-hero::after {
+    background:
+      linear-gradient(90deg, rgba(4, 16, 2, .35), rgba(4, 16, 2, .17)),
+      linear-gradient(0deg, rgba(4, 16, 2, .57) 0%, rgba(4, 16, 2, .27) 46%, rgba(4, 16, 2, .2) 100%);
+  }
+  .cinematic-tag { padding: 10px 14px; font-size: 11px; }
+  .cinematic-title { margin: 26px 0 20px; font-size: clamp(40px, 12.8vw, 58px); line-height: .94; letter-spacing: -.075em; }
+  .cinematic-subtext { max-width: 440px; font-size: 14px; line-height: 1.65; }
+  .cinematic-actions { width: min(100%, 440px); flex-direction: column; gap: 12px; margin-top: 25px; }
+  .cinematic-actions .button { width: 100%; min-height: 58px; font-size: 15px; }
+}
+@media (max-width: 350px) {
+  .cinematic-title { font-size: clamp(37px, 11.7vw, 42px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-hero::before { animation: none; transform: none; }
+}
