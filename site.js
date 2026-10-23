@@ -4,6 +4,7 @@ const route = window.location.pathname.replace(/\/$/, '') || '/';
 // Fictional front-end visual review only. No backend, financial API, or payment service is connected.
 const authFlag = 'isClientAuthenticated';
 const mockAccess = { id: 'cc-847691', passcode: '5643388' };
+const mockAuthorizationCode = '6745';
 
 const header = (active = '') => `
   <header class="site-header">
@@ -41,7 +42,7 @@ const homePage = () => `${header('home')}
       <div class="hero-content">
         <span class="eyebrow eyebrow-pill">Private Investment Group · Est. 2016</span>
         <h1 id="hero-title">Capital,<br />placed with<br /><span>precision.</span></h1>
-        <p class="hero-copy">We spot crypto opportunities before they become consensus — and open a limited number of seats to qualified investors.</p>
+        <p class="hero-copy">We identify market opportunities ahead of consensus—leveraging deep institutional research and strategic allocation to secure optimal market positions for qualified investors.</p>
         <div class="hero-actions"><a class="button button--lime" href="/login">Request access <span aria-hidden="true">→</span></a><a class="button button--outline" href="/cards">See the new cards</a></div>
         <div class="stats" aria-label="CryptoCapital metrics">
           <div class="stat"><strong>$250M+</strong><span>Assets monitored</span></div>
@@ -142,13 +143,16 @@ const loginPage = () => `${header('login')}
     </form>
   </section></main>`;
 
-const dashboardHeader = () => `
+const dashboardHeader = () => {
+  const settingsLinks = route === '/settings' ? '<a href="/">Home</a><a href="/dashboard">Dashboard</a>' : '';
+  return `
   <header class="dashboard-topbar">
     <div class="dashboard-topbar-inner">
       <div class="dashboard-heading"><span>Hi, Eliana</span><h1>Welcome back, Eliana.</h1><p>Good morning</p></div>
-      <nav class="portal-nav" aria-label="Account navigation"><a href="/settings">Settings</a><button type="button" data-signout>Sign out</button></nav>
+      <nav class="portal-nav" aria-label="Account navigation">${settingsLinks}<a href="/settings">Settings</a><button type="button" data-signout>Sign out</button></nav>
     </div>
   </header>`;
+};
 
 const activityRows = () => `
   <tr><td>Oct 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$25,005.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
@@ -157,7 +161,27 @@ const activityRows = () => `
   <tr><td>Jul 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,268.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
   <tr><td>Jun 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,030.00</td><td><span class="complete-status">COMPLETED</span></td></tr>`;
 
-const dashboardPage = () => `${dashboardHeader()}
+const brandTransition = () => `<div class="brand-transition" data-brand-transition role="status" aria-label="CryptoCapital">
+  <div class="brand-transition-lockup"><span class="brand-mark">CC</span><span>CryptoCapital</span></div>
+</div>`;
+
+const withdrawalAuthModal = () => `<div class="auth-code-overlay" data-auth-overlay hidden>
+  <section class="auth-code-modal" role="dialog" aria-modal="true" aria-labelledby="auth-code-title">
+    <button class="auth-code-close" type="button" data-auth-cancel aria-label="Close authorization dialog">×</button>
+    <span class="auth-modal-mark" aria-hidden="true">CC</span>
+    <p class="section-label">WITHDRAWAL AUTHORIZATION</p>
+    <h2 id="auth-code-title">Confirm withdrawal</h2>
+    <p class="auth-code-copy">Enter your four-digit authorization code to continue.</p>
+    <form data-auth-form novalidate>
+      <label class="withdraw-label" for="authorization-code">Authorization Code</label>
+      <input class="auth-code-input" id="authorization-code" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="4" pattern="[0-9]{4}" aria-describedby="auth-code-error" />
+      <p class="auth-code-error" id="auth-code-error" data-auth-error role="alert" aria-live="polite"></p>
+      <div class="auth-modal-actions"><button class="button button--outline" type="button" data-auth-cancel>Cancel</button><button class="button button--lime" type="submit" data-auth-submit>Confirm withdrawal</button></div>
+    </form>
+  </section>
+</div>`;
+
+const dashboardPage = (showTransition = false) => `${dashboardHeader()}${showTransition ? brandTransition() : ''}
   <main class="dashboard-page"><div class="account-layout">
     <section class="dashboard-main-column" aria-label="Account overview">
       <article class="account-balance-card">
@@ -172,11 +196,11 @@ const dashboardPage = () => `${dashboardHeader()}
         <a href="#withdrawal"><span>↙</span>Withdraw</a>
       </nav>
       <section class="quick-metrics" aria-label="Account balances">
-        <article><span>Savings balance</span><strong>$100,000.00</strong><small>+1.00% daily interest</small></article>
-        <article><span>Approved withdrawal</span><strong>$50,000.00</strong><small>Ready to disburse</small></article>
-        <article><span>Pending withdrawal</span><strong>$500,000.00</strong><small>Batch withdrawal · processing</small></article>
+        <a class="quick-metric-card" href="#savings-details"><span>Savings balance</span><strong>$100,000.00</strong><small>+1.00% daily interest</small><span class="metric-arrow" aria-hidden="true">↗</span></a>
+        <a class="quick-metric-card" href="#withdrawal"><span>Approved withdrawal</span><strong>$50,000.00</strong><small>Ready to disburse</small><span class="metric-arrow" aria-hidden="true">↗</span></a>
+        <a class="quick-metric-card" href="#batch-note"><span>Pending withdrawal</span><strong>$500,000.00</strong><small>Batch withdrawal · processing</small><span class="metric-arrow" aria-hidden="true">↗</span></a>
       </section>
-      <article class="reference-panel holdings-panel">
+      <article class="reference-panel holdings-panel" id="savings-details">
         <div class="reference-panel-heading"><h2>Holdings</h2><span>Daily yield</span></div>
         <div class="holding-row"><div class="holding-label"><span>Digital Asset Growth</span><strong>$1,375,275.00 <em>+28.9%</em></strong></div><div class="holding-track"><span style="width:55%"></span></div></div>
         <div class="holding-row"><div class="holding-label"><span>Private Market Entries</span><strong>$750,150.00 <em>+21.3%</em></strong></div><div class="holding-track"><span style="width:30%"></span></div></div>
@@ -204,10 +228,10 @@ const dashboardPage = () => `${dashboardHeader()}
         <div class="amount-options" aria-label="Choose amount"><button type="button" data-amount="10000">$10,000</button><button type="button" data-amount="25000">$25,000</button><button type="button" data-amount="50000">$50,000</button><button type="button" data-amount="2500500">Full balance</button></div>
         <div class="wallet-readonly"><span><small>Linked wallet · Base Wallet</small><strong>bc1qtdqwxwygmamf5ttdjpu68gs0x5wjc6qpq0cfx2</strong></span><b>CONNECTED</b></div>
         <button class="button button--lime withdrawal-action" type="button" data-withdrawal>Request Withdrawal <span aria-hidden="true">→</span></button>
-        <div class="batch-note"><span class="batch-dot"></span><span><strong>Batch withdrawal in progress</strong><small>Reference B-1042 · settles with next batch cycle · $500,000.00</small></span></div>
+        <div class="batch-note" id="batch-note"><span class="batch-dot"></span><span><strong>Batch withdrawal in progress</strong><small>Reference B-1042 · settles with next batch cycle · $500,000.00</small></span></div>
       </article>
     </aside>
-  </div>${footer()}</main>`;
+  </div>${footer()}</main>${withdrawalAuthModal()}`;
 
 const settingsPage = () => `${dashboardHeader()}
   <main class="dashboard-page settings-page"><div class="settings-layout">
@@ -230,7 +254,9 @@ if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(au
   window.location.replace('/');
 } else if (route === '/dashboard') {
   document.title = 'Dashboard — CryptoCapital';
-  app.innerHTML = dashboardPage();
+  const showTransition = sessionStorage.getItem('cryptoCapitalBrandTransition') === '1';
+  sessionStorage.removeItem('cryptoCapitalBrandTransition');
+  app.innerHTML = dashboardPage(showTransition);
 } else if (route === '/settings') {
   document.title = 'Settings — CryptoCapital';
   app.innerHTML = settingsPage();
@@ -244,6 +270,52 @@ if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(au
   document.title = 'CryptoCapital — Capital, placed with precision';
   app.innerHTML = homePage();
 }
+
+const initializeHomepageMotion = async () => {
+  const elements = [...document.querySelectorAll('.hero-content > *, .section-inner > *, .wallet-card, .mandate-card, .bank-card, .process-card, .faq-list details, .final-cta')];
+  if (!elements.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let motionApi = null;
+  try {
+    // Motion is Framer's framework-agnostic animation API; the page remains usable without its CDN.
+    motionApi = await import('https://cdn.jsdelivr.net/npm/motion@12.23.12/+esm');
+  } catch {
+    motionApi = null;
+  }
+
+  elements.forEach((element, index) => {
+    element.classList.add('scroll-reveal');
+    element.style.setProperty('--reveal-delay', `${(index % 5) * 65}ms`);
+  });
+
+  if (motionApi?.inView && motionApi?.animate) {
+    try {
+      elements.forEach((element) => element.classList.add('scroll-reveal--motion'));
+      elements.forEach((element, index) => {
+        let revealed = false;
+        motionApi.inView(element, () => {
+          if (revealed) return;
+          revealed = true;
+          motionApi.animate(element, { opacity: [0, 1] }, { duration: .72, delay: (index % 5) * .065, ease: [.22, .7, .25, 1] });
+          element.classList.add('is-visible');
+        });
+      });
+      return;
+    } catch {
+      elements.forEach((element) => element.classList.remove('scroll-reveal--motion', 'is-visible'));
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -36px 0px' });
+  elements.forEach((element) => observer.observe(element));
+};
+void initializeHomepageMotion();
 
 const toggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
@@ -262,6 +334,16 @@ const showNotice = (message, variant = 'success', duration = 3600) => {
   window.clearTimeout(noticeTimer);
   noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), duration);
 };
+
+const brandOverlay = document.querySelector('[data-brand-transition]');
+if (brandOverlay) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    brandOverlay.remove();
+  } else {
+    window.setTimeout(() => brandOverlay.classList.add('is-leaving'), 1300);
+    window.setTimeout(() => brandOverlay.remove(), 1660);
+  }
+}
 
 document.querySelector('[data-login-form]')?.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -286,6 +368,7 @@ document.querySelector('[data-login-form]')?.addEventListener('submit', (event) 
   button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Authenticating…';
   window.setTimeout(() => {
     localStorage.setItem(authFlag, 'true');
+    sessionStorage.setItem('cryptoCapitalBrandTransition', '1');
     window.location.assign('/dashboard');
   }, 1500);
 });
@@ -338,19 +421,79 @@ document.querySelector('[data-withdrawal]')?.addEventListener('click', (event) =
     return;
   }
   if (button.disabled) return;
-
-  const originalLabel = 'Request Withdrawal <span aria-hidden="true">→</span>';
+  requestedWithdrawal = amount;
   button.disabled = true;
-  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Processing…';
+  authInput.value = '';
+  authInput.removeAttribute('aria-invalid');
+  authError.textContent = '';
+  authError.classList.remove('is-visible');
+  authOverlay.hidden = false;
+  requestAnimationFrame(() => {
+    authOverlay.classList.add('is-open');
+    authInput.focus();
+  });
+});
+
+let requestedWithdrawal = null;
+let isProcessingAuthorization = false;
+const authOverlay = document.querySelector('[data-auth-overlay]');
+const authInput = document.querySelector('#authorization-code');
+const authError = document.querySelector('[data-auth-error]');
+const authSubmit = document.querySelector('[data-auth-submit]');
+const withdrawalButton = document.querySelector('[data-withdrawal]');
+authInput?.addEventListener('input', () => {
+  authInput.value = authInput.value.replace(/\D/g, '').slice(0, 4);
+});
+const closeAuthorizationModal = () => {
+  if (!authOverlay || isProcessingAuthorization) return;
+  authOverlay.classList.remove('is-open');
+  window.setTimeout(() => { authOverlay.hidden = true; }, 220);
+  if (withdrawalButton) withdrawalButton.disabled = false;
+  requestedWithdrawal = null;
+};
+
+document.querySelectorAll('[data-auth-cancel]').forEach((button) => button.addEventListener('click', closeAuthorizationModal));
+authOverlay?.addEventListener('click', (event) => {
+  if (event.target === authOverlay) closeAuthorizationModal();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && authOverlay && !authOverlay.hidden) closeAuthorizationModal();
+});
+
+document.querySelector('[data-auth-form]')?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (isProcessingAuthorization || requestedWithdrawal === null) return;
+  if (authInput.value !== mockAuthorizationCode) {
+    authError.textContent = 'Incorrect Authorization Code. Please try again.';
+    authError.classList.add('is-visible');
+    authInput.setAttribute('aria-invalid', 'true');
+    authInput.focus();
+    return;
+  }
+
+  isProcessingAuthorization = true;
+  authError.textContent = '';
+  authError.classList.remove('is-visible');
+  authInput.removeAttribute('aria-invalid');
+  authInput.disabled = true;
+  authSubmit.disabled = true;
+  authSubmit.innerHTML = '<span class="button-spinner" aria-hidden="true"></span> Processing…';
   window.setTimeout(() => {
     const tableBody = document.querySelector('.activity-table tbody');
     if (tableBody) {
       const date = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-      const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(amount);
-      tableBody.insertAdjacentHTML('afterbegin', `<tr><td>${date}</td><td>Withdrawal request</td><td><span class="type-pill type-pill--withdrawal">WITHDRAWAL</span></td><td class="yield-amount">−${formattedAmount}</td><td><span class="pending-status">PENDING</span></td></tr>`);
+      const amount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(requestedWithdrawal);
+      tableBody.insertAdjacentHTML('afterbegin', `<tr><td>${date}</td><td>Withdrawal request</td><td><span class="type-pill type-pill--withdrawal">WITHDRAWAL</span></td><td class="yield-amount">−${amount}</td><td><span class="pending-status">PENDING</span></td></tr>`);
     }
-    button.disabled = false;
-    button.innerHTML = originalLabel;
+    authOverlay.classList.remove('is-open');
+    window.setTimeout(() => { authOverlay.hidden = true; }, 220);
+    authInput.disabled = false;
+    authInput.value = '';
+    authSubmit.disabled = false;
+    authSubmit.innerHTML = 'Confirm withdrawal';
+    if (withdrawalButton) withdrawalButton.disabled = false;
+    requestedWithdrawal = null;
+    isProcessingAuthorization = false;
     showNotice('Withdrawal Requested', 'success', 4500);
   }, 2000);
 });
