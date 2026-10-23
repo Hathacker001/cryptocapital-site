@@ -37,32 +37,68 @@ const paymentCard = (kind, label, network = 'VISA') => `
   </div>`;
 
 const homePage = () => `${header('home')}
-  <main>
-    <section class="hero" aria-labelledby="hero-title">
+  <main class="home-page">
+    <section class="hero home-hero" aria-labelledby="hero-title">
       <div class="hero-content">
-        <span class="eyebrow eyebrow-pill">Private Investment Group · Est. 2016</span>
-        <h1 id="hero-title">Capital,<br />placed with<br /><span>precision.</span></h1>
-        <p class="hero-copy">We identify market opportunities ahead of consensus—leveraging deep institutional research and strategic allocation to secure optimal market positions for qualified investors.</p>
-        <div class="hero-actions"><a class="button button--lime" href="/login">Request access <span aria-hidden="true">→</span></a><a class="button button--outline" href="/cards">See the new cards</a></div>
-        <div class="stats" aria-label="CryptoCapital metrics">
-          <div class="stat"><strong>$250M+</strong><span>Assets monitored</span></div>
-          <div class="stat"><strong>21%</strong><span>Avg. annual return</span></div>
-          <div class="stat"><strong>48</strong><span>Mandates completed</span></div>
+        <div class="hero-copy-column">
+          <span class="eyebrow hero-label">01 — What we offer</span>
+          <h1 id="hero-title">One secure wallet for <em>modern capital.</em></h1>
+          <p class="hero-copy">Payments, cards, insights and global access — combined into one intelligent investment account.</p>
+          <div class="hero-actions"><a class="button button--lime" href="/login">Request access <span aria-hidden="true">→</span></a><a class="button button--outline" href="/cards">Explore cards</a></div>
+        </div>
+        <div class="hero-graphic" role="group" aria-label="CryptoCapital account with four integrated benefits">
+          <div class="hero-orbit hero-orbit--outer" aria-hidden="true"><i></i><b></b></div>
+          <div class="hero-orbit hero-orbit--inner" aria-hidden="true"><i></i></div>
+          <div class="hero-core"><span class="brand-mark">CC</span><span class="hero-core-title">Capital<br /><strong>in motion</strong></span><span class="hero-core-status"><i></i> Account access</span></div>
+          <span class="hero-floating-tag hero-floating-tag--fee">No transaction fee</span>
+          <span class="hero-floating-tag hero-floating-tag--tracking">Real-time tracking</span>
+          <span class="hero-floating-tag hero-floating-tag--verification">One-time verification</span>
+          <span class="hero-floating-tag hero-floating-tag--account">Virtual account</span>
         </div>
       </div>
     </section>
 
-    <section class="section offer-section">
-      <div class="section-inner offer-layout">
-        <div>
-          <p class="section-label">01 — What we offer</p>
-          <h2 class="section-heading">One secure wallet for modern capital.</h2>
-          <p class="section-intro">Payments, cards, insights and global access — combined into one intelligent investment account.</p>
-          <div class="wallet-features"><span>No transaction fee</span><span>Real-time tracking</span><span>One-time verification</span><span>Virtual account</span></div>
+    <section class="section proof-section" aria-label="Capital metrics and fund growth">
+      <div class="section-inner">
+        <p class="section-label proof-label">A record built with intention</p>
+        <div class="proof-layout">
+          <div class="proof-stats" aria-label="CryptoCapital metrics">
+            <article class="proof-stat"><strong>$250M+</strong><span>CAPITAL DEPLOYED</span></article>
+            <article class="proof-stat"><strong>21%</strong><span>AVG. ANNUAL RETURN</span></article>
+            <article class="proof-stat"><strong>48</strong><span>MANDATES COMPLETED</span></article>
+            <article class="proof-stat"><strong>&lt;500</strong><span>ACTIVE CLIENT SEATS</span></article>
+          </div>
+          <article class="fund-chart-card" aria-labelledby="fund-chart-title">
+            <div class="fund-chart-heading">
+              <div><p class="chart-overline">Long-term perspective</p><h2 id="fund-chart-title">Fund growth · 2016–2026</h2></div>
+              <strong>+412%</strong>
+            </div>
+            <div class="fund-chart-wrap">
+              <svg class="fund-chart" viewBox="0 0 640 280" role="img" aria-labelledby="fund-chart-svg-title fund-chart-svg-desc">
+                <title id="fund-chart-svg-title">Fund growth from 2016 to 2026</title>
+                <desc id="fund-chart-svg-desc">A steadily rising line across the ten-year period.</desc>
+                <defs>
+                  <linearGradient id="fund-chart-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#c9ff00" stop-opacity=".24"/><stop offset="1" stop-color="#c9ff00" stop-opacity="0"/></linearGradient>
+                </defs>
+                <g class="fund-chart-grid" aria-hidden="true"><path d="M24 48H624M24 102H624M24 156H624M24 210H624"/><path d="M24 34V238M174 34V238M324 34V238M474 34V238M624 34V238"/></g>
+                <path class="fund-chart-area" d="M24 218 C72 214 91 205 126 210 S178 199 206 184 S254 190 285 165 S330 171 358 148 S402 155 432 125 S476 137 506 101 S551 99 577 69 S607 52 624 32 L624 238 L24 238 Z"/>
+                <path class="fund-chart-line" d="M24 218 C72 214 91 205 126 210 S178 199 206 184 S254 190 285 165 S330 171 358 148 S402 155 432 125 S476 137 506 101 S551 99 577 69 S607 52 624 32"/>
+                <circle class="fund-chart-point" cx="24" cy="218" r="4"/><circle class="fund-chart-point" cx="358" cy="148" r="4"/><circle class="fund-chart-point fund-chart-point--current" cx="624" cy="32" r="6"/>
+              </svg>
+            </div>
+            <div class="fund-chart-years"><span>2016</span><span>2019</span><span>2022</span><span>2026</span></div>
+          </article>
         </div>
-        <div class="wallet-card" aria-label="Illustration of a CryptoCapital account">
-          <div class="wallet-top"><div><span class="wallet-balance-label">Total account value</span><strong class="wallet-balance">$84,290<span style="color:var(--acid);font-size:.52em">.00</span></strong></div><span class="wallet-chip" aria-hidden="true"></span></div>
-          <div class="wallet-bottom"><span class="brand"><span class="brand-mark">CC</span><span>CryptoCapital</span></span><span style="color:var(--muted);font-size:11px">Private account</span></div>
+      </div>
+    </section>
+
+    <section class="section about-section" aria-labelledby="about-title">
+      <div class="section-inner about-layout">
+        <div class="about-intro"><p class="section-label">About the desk</p><h2 class="section-heading" id="about-title">A private desk for <em>discerning capital.</em></h2><p class="section-intro">Founded on a simple conviction: exceptional returns come from seeing the market differently — earlier, calmer, and with more discipline than the crowd.</p></div>
+        <div class="about-principles" aria-label="How the desk operates">
+          <article class="about-row"><span class="about-number">01</span><div><h3>Conviction over consensus</h3><p>Independent research and measured conviction, ahead of the market cycle.</p></div><span class="about-mark" aria-hidden="true">↗</span></article>
+          <article class="about-row"><span class="about-number">02</span><div><h3>Skin in the game</h3><p>We commit our own capital alongside client mandates.</p></div><span class="about-mark" aria-hidden="true">↗</span></article>
+          <article class="about-row"><span class="about-number">03</span><div><h3>Discretion by design</h3><p>Selective access, private reporting and careful information stewardship.</p></div><span class="about-mark" aria-hidden="true">↗</span></article>
         </div>
       </div>
     </section>
@@ -87,7 +123,7 @@ const homePage = () => `${header('home')}
         </div>
         <div>
           <p class="section-label">New feature</p>
-          <h2 class="section-heading">Spend your gains with CryptoCapital cards.</h2>
+          <h2 class="section-heading">Spend your gains with CryptoCapital cards</h2>
           <p class="section-intro">Three tiers, instant virtual issue, and spending straight from your investment balance — anywhere in the world.</p>
           <ul class="promo-list"><li>Instant issue</li><li>Global spend</li><li>Freeze in a tap</li></ul>
           <a class="button button--outline" href="/cards">Compare cards <span aria-hidden="true">→</span></a>
@@ -118,9 +154,16 @@ const homePage = () => `${header('home')}
       </div>
     </section>
 
-    <section class="final-cta"><h2>The market rewards those who arrive early.</h2><a class="button button--dark" href="/login">Request private access <span aria-hidden="true">→</span></a></section>
+    <section class="final-cta"><h2>THE MARKET REWARDS THOSE WHO ARRIVE EARLY.</h2><a class="button button--dark" href="/login">Request private access <span aria-hidden="true">→</span></a></section>
   </main>
-  ${footer()}`;
+  <footer class="home-footer">
+    <div class="home-footer-inner">
+      <div class="home-footer-brand"><a class="brand" href="/" aria-label="CryptoCapital home"><span class="brand-mark">CC</span><span>CryptoCapital</span></a><p>Private capital, placed with precision.</p></div>
+      <div class="home-footer-contact"><span class="home-footer-label">Office</span><address>1 Capital Square<br />City of London<br />United Kingdom</address></div>
+      <div class="home-footer-contact"><span class="home-footer-label">Private enquiries</span><a href="mailto:privateaccess@cryptocapital.example">privateaccess@cryptocapital.example</a><a href="tel:+442079460831">+44 (0)20 7946 0831</a></div>
+    </div>
+    <div class="home-footer-legal"><span>CryptoCapital Group © 2026</span><p>Digital assets involve significant risk and may not be suitable for all investors. Returns are not guaranteed; you may lose some or all of your invested capital. This material is not investment advice.</p></div>
+  </footer>`;
 
 const cardsPage = () => `${header('cards')}
   <main class="cards-page"><div class="cards-page-inner">
@@ -272,7 +315,7 @@ if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(au
 }
 
 const initializeHomepageMotion = async () => {
-  const elements = [...document.querySelectorAll('.hero-content > *, .section-inner > *, .wallet-card, .mandate-card, .bank-card, .process-card, .faq-list details, .final-cta')];
+  const elements = [...document.querySelectorAll('.home-page .hero-content > *, .home-page .section-inner > *, .home-page .hero-floating-tag, .home-page .proof-stat, .home-page .fund-chart-card, .home-page .about-row, .home-page .bank-card, .home-page .mandate-card, .home-page .process-card, .home-page .faq-list details, .home-page .final-cta, .home-footer-inner > *')];
   if (!elements.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   let motionApi = null;
