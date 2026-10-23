@@ -1,6 +1,7 @@
 const app = document.querySelector('#app');
 const notice = document.querySelector('#notice');
 const route = window.location.pathname.replace(/\/$/, '') || '/';
+const demoSessionKey = 'isClientAuthenticated';
 
 const header = (active = '') => `
   <header class="site-header">
@@ -133,11 +134,85 @@ const loginPage = () => `${header('login')}
     <h1 id="login-title">Client Login</h1><p class="login-subtitle">Private client portal</p>
     <span class="login-label">Account ID</span><div class="mock-input" aria-label="Demo account ID field, disabled">CC-0000-0000</div>
     <span class="login-label">Passcode</span><div class="mock-input mock-input--secret" aria-label="Demo passcode field, disabled">••••••••••</div>
-    <button class="button button--lime login-button" type="button" data-demo-login>Enter dashboard <span aria-hidden="true">→</span></button>
-    <p class="login-demo">Demo preview · Sign-in is disabled</p><p class="login-note">This visual recreation does not accept or store account details.</p>
+    <button class="button button--lime login-button" type="button" data-demo-login>Enter demo dashboard <span aria-hidden="true">→</span></button>
+    <p class="login-demo">Demo preview · no account credentials needed</p><p class="login-note">This visual prototype does not authenticate users or accept credentials.</p>
   </section></main>`;
 
-if (route === '/cards') {
+const dashboardHeader = (active = 'dashboard') => `
+  <header class="site-header dashboard-header">
+    <div class="header-inner">
+      <a class="brand" href="/" aria-label="CryptoCapital home"><span class="brand-mark">CC</span><span>CryptoCapital</span></a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span></button>
+      <nav class="main-nav" aria-label="Dashboard navigation">
+        <a href="/dashboard" ${active === 'dashboard' ? 'aria-current="page"' : ''}>Overview</a>
+        <a href="/dashboard#activity">Activity</a>
+        <a href="/settings" ${active === 'settings' ? 'aria-current="page"' : ''}>Settings</a>
+      </nav>
+      <button class="button button--outline header-action" type="button" data-demo-signout>Sign out</button>
+    </div>
+  </header>`;
+
+const demoNotice = `<div class="demo-banner" role="note"><span class="demo-banner-mark">DEMO</span><span><strong>Simulation only.</strong> All balances, yield figures, identity status and activity are fictional interface data. No funds, investment, wallet connection or transaction exists.</span></div>`;
+
+const dashboardPage = () => `${dashboardHeader('dashboard')}
+  <main class="dashboard-page"><div class="dashboard-wrap">
+    <div class="dashboard-welcome"><div><p class="section-label">CLIENT PORTAL / OVERVIEW</p><h1>Welcome back, Eliana.</h1><p>Your private account at a glance.</p></div><span class="demo-profile-pill">SAMPLE PROFILE</span></div>
+    ${demoNotice}
+    <section class="dashboard-metrics" aria-label="Sample account metrics">
+      <article class="dash-metric dash-metric--primary"><span>Total balance <i>DEMO</i></span><strong>$2,500,500.00</strong><small>Illustrative value only</small></article>
+      <article class="dash-metric"><span>Savings balance</span><strong>$100,000.00</strong><small class="positive">+1.00% daily interest <em>illustrative</em></small></article>
+      <article class="dash-metric"><span>Approved withdrawal</span><strong>$50,000.00</strong><small>Sample status · ready to disburse</small></article>
+      <article class="dash-metric"><span>Pending withdrawal</span><strong>$500,000.00</strong><small>Fictional batch · processing</small></article>
+    </section>
+    <section class="dashboard-main-grid">
+      <article class="dash-panel balance-panel">
+        <div class="dash-panel-heading"><div><p class="section-label">MAIN ACCOUNT</p><h2>Portfolio balance</h2></div><span class="tiny-status">DEMO DATA</span></div>
+        <p class="balance-caption">Total account value</p><strong class="dash-total">$2,500,500<span>.00</span></strong>
+        <p class="balance-change">+$25,005.00 <span>+1.00% accrued today <i>sample rate</i></span></p>
+        <div class="yield-strip"><div><span>Illustrative rate</span><strong>+1.00% <small>RATE / DAY</small></strong></div><div><span>Sample accrual</span><strong>+$25,005.00 <small>ACCRUED TODAY</small></strong></div><div><span>Next sample accrual in</span><strong data-countdown>10:37:08</strong></div></div>
+      </article>
+      <article class="dash-panel allocation-panel">
+        <div class="dash-panel-heading"><div><p class="section-label">SAMPLE MIX</p><h2>Allocation</h2></div><span class="tiny-status">SIMULATED</span></div>
+        <div class="allocation-content"><div class="allocation-donut" role="img" aria-label="Sample allocation: 55 percent digital asset growth, 30 percent private market entries, 15 percent defensive yield"><span>DEMO<small>ALLOCATION</small></span></div><ul class="allocation-legend"><li><i class="legend-growth"></i><span>Digital Asset Growth</span><b>55%</b></li><li><i class="legend-private"></i><span>Private Market Entries</span><b>30%</b></li><li><i class="legend-yield"></i><span>Defensive Yield</span><b>15%</b></li></ul></div>
+      </article>
+      <article class="dash-panel withdrawal-panel">
+        <div class="dash-panel-heading"><div><p class="section-label">DEMO CONTROLS</p><h2>Withdrawal preview</h2></div><span class="tiny-status">DISABLED</span></div>
+        <p class="withdraw-copy">This example screen displays an amount as available for immediate withdrawal. No wallet is connected in this prototype, and it cannot send funds.</p>
+        <label class="withdraw-label" for="withdraw-amount">Sample amount (USD)</label><div class="withdraw-input-wrap"><span>$</span><input id="withdraw-amount" type="number" min="0" placeholder="Enter a demo amount" inputmode="decimal" aria-label="Sample withdrawal amount in US dollars" /></div>
+        <div class="amount-options" aria-label="Sample amount shortcuts"><button type="button" data-amount="10000">$10,000</button><button type="button" data-amount="25000">$25,000</button><button type="button" data-amount="50000">$50,000</button><button type="button" data-amount="2500500">Full balance</button></div>
+        <div class="wallet-readonly"><span><small>Wallet status · not connected</small><strong>Demo address hidden</strong></span><b>SIMULATION</b></div>
+        <button class="button button--lime withdrawal-action" type="button" data-demo-withdraw>Request withdrawal <span aria-hidden="true">→</span></button>
+        <div class="batch-note"><span class="batch-dot"></span><span><strong>Example batch item · not a real request</strong><small>Reference B-1042 · sample next-cycle settlement · $500,000.00</small></span></div>
+      </article>
+      <article class="dash-panel activity-panel" id="activity">
+        <div class="dash-panel-heading"><div><p class="section-label">ACCOUNT HISTORY</p><h2>Recent activity</h2></div><span class="tiny-status">YIELD EXAMPLES</span></div>
+        <div class="activity-table-wrap"><table class="activity-table"><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+          <tr><td>Oct 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$25,005.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+          <tr><td>Sep 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,755.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+          <tr><td>Aug 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,510.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+          <tr><td>Jul 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,268.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+          <tr><td>Jun 01, 2026</td><td>Monthly yield distribution</td><td><span class="type-pill">YIELD</span></td><td class="yield-amount">+$24,030.00</td><td><span class="complete-status">COMPLETED</span></td></tr>
+        </tbody></table></div><p class="table-footnote">Every row is fictional sample data; no deposits or withdrawals are represented.</p>
+      </article>
+    </section>
+  </div>${footer()}</main>`;
+
+const settingsPage = () => `${dashboardHeader('settings')}
+  <main class="dashboard-page settings-page"><div class="dashboard-wrap">
+    <div class="dashboard-welcome"><div><p class="section-label">CLIENT PORTAL / SETTINGS</p><h1>Profile & settings.</h1><p>Sample verification status for this interface prototype.</p></div><span class="demo-profile-pill">SAMPLE PROFILE</span></div>
+    ${demoNotice}
+    <section class="settings-grid"><article class="dash-panel identity-panel"><div class="dash-panel-heading"><div><p class="section-label">IDENTITY</p><h2>Verification status</h2></div><span class="verified-pill">VERIFIED · DEMO</span></div><p class="settings-explainer">This is a fictional status card for layout review only. No identity document or personal identifier is stored or displayed.</p><div class="identity-placeholder"><span class="identity-icon">CC</span><span><strong>Sample client profile</strong><small>Personal document fields omitted from this preview</small></span></div><dl class="settings-list"><div><dt>Profile</dt><dd>Demo client</dd></div><div><dt>Verification</dt><dd>Verified · sample status only</dd></div><div><dt>Access ID</dt><dd>Hidden in prototype</dd></div><div><dt>Security</dt><dd>No real credentials are used</dd></div></dl></article><article class="dash-panel preferences-panel"><div class="dash-panel-heading"><div><p class="section-label">PREFERENCES</p><h2>Account controls</h2></div></div><a class="settings-link" href="/dashboard"><span><strong>Overview</strong><small>Return to the sample dashboard</small></span><b>→</b></a><button class="settings-signout" type="button" data-demo-signout><span><strong>Sign out</strong><small>Clear this browser's demo session</small></span><b>↗</b></button></article></section>
+  </div>${footer()}</main>`;
+
+if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(demoSessionKey) !== 'true') {
+  window.location.replace('/');
+} else if (route === '/dashboard') {
+  document.title = 'Demo Dashboard — CryptoCapital';
+  app.innerHTML = dashboardPage();
+} else if (route === '/settings') {
+  document.title = 'Demo Settings — CryptoCapital';
+  app.innerHTML = settingsPage();
+} else if (route === '/cards') {
   document.title = 'Cards — CryptoCapital';
   app.innerHTML = cardsPage();
 } else if (route === '/login') {
@@ -159,8 +234,39 @@ toggle?.addEventListener('click', () => {
 
 let noticeTimer;
 document.querySelector('[data-demo-login]')?.addEventListener('click', () => {
-  notice.textContent = 'Demo only — sign-in is not connected.';
+  localStorage.setItem(demoSessionKey, 'true');
+  window.location.assign('/dashboard');
+});
+
+document.querySelectorAll('[data-demo-signout]').forEach((button) => {
+  button.addEventListener('click', () => {
+    localStorage.removeItem(demoSessionKey);
+    window.location.assign('/');
+  });
+});
+
+document.querySelectorAll('[data-amount]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const amount = document.querySelector('#withdraw-amount');
+    if (amount) amount.value = button.dataset.amount || '';
+  });
+});
+
+document.querySelector('[data-demo-withdraw]')?.addEventListener('click', () => {
+  notice.textContent = 'Demo only — no withdrawal was submitted and no funds were moved.';
   notice.classList.add('is-visible');
   window.clearTimeout(noticeTimer);
-  noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), 3000);
+  noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), 3600);
 });
+
+const countdown = document.querySelector('[data-countdown]');
+if (countdown) {
+  let secondsLeft = (10 * 60 * 60) + (37 * 60) + 8;
+  window.setInterval(() => {
+    secondsLeft = secondsLeft > 0 ? secondsLeft - 1 : (10 * 60 * 60) + (37 * 60) + 8;
+    const hours = String(Math.floor(secondsLeft / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, '0');
+    const seconds = String(secondsLeft % 60).padStart(2, '0');
+    countdown.textContent = `${hours}:${minutes}:${seconds}`;
+  }, 1000);
+}

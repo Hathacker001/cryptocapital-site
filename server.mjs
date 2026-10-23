@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const publicRoot = resolve(root, 'public');
-const pageRoutes = new Set(['/', '/cards', '/login']);
+const pageRoutes = new Set(['/', '/cards', '/login', '/dashboard', '/settings']);
 const files = new Map([
   ['/index.html', resolve(root, 'index.html')],
   ['/site.css', resolve(root, 'site.css')],

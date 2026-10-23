@@ -1,1 +1,1 @@
-{"routes":[{"path":"/","title":"Home"},{"path":"/cards","title":"Cards"},{"path":"/login","title":"Client Login"}]}
+{"routes":[{"path":"/","title":"Home"},{"path":"/cards","title":"Cards"},{"path":"/login","title":"Client Login"},{"path":"/dashboard","title":"Demo Dashboard"},{"path":"/settings","title":"Demo Settings"}]}
