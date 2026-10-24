@@ -170,7 +170,7 @@ const homePage = () => `${header('home')}
     <div class="home-footer-inner">
       <div class="home-footer-brand"><a class="brand" href="/" aria-label="CryptoCapital home"><span class="brand-mark">CC</span><span>CryptoCapital</span></a><p>Private capital, placed with precision.</p></div>
       <div class="home-footer-contact"><span class="home-footer-label">Office</span><address>1 Capital Square<br />City of London<br />United Kingdom</address></div>
-      <div class="home-footer-contact"><span class="home-footer-label">Private enquiries</span><a href="mailto:privateaccess@cryptocapital.example">privateaccess@cryptocapital.example</a><a href="tel:+442079460831">+44 (0)20 7946 0831</a></div>
+      <div class="home-footer-contact"><span class="home-footer-label">Private enquiries</span><a href="mailto:cryptocapitalfx@aol.com">cryptocapitalfx@aol.com</a></div>
     </div>
     <div class="home-footer-legal"><span>CryptoCapital Group © 2026</span><p>Digital assets involve significant risk and may not be suitable for all investors. Returns are not guaranteed; you may lose some or all of your invested capital. This material is not investment advice.</p></div>
   </footer>`;
