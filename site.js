@@ -242,15 +242,16 @@ const marketInsightSection = () => `
     </div>
   </section>`;
 
+// The final checksum character is intentionally altered so this visual address cannot receive mainnet funds.
+const bitcoinDepositAddress = 'bc1qfke2sv4w83ll4suetutn3s564tsczvkvkyg7rq';
 const bitcoinDepositPanel = () => `
   <article class="reference-panel deposit-panel" id="deposit" aria-labelledby="deposit-title">
-    <div class="reference-panel-heading"><div><p class="section-label">BITCOIN</p><h2 id="deposit-title">Deposit</h2></div><span class="deposit-preview-pill">VISUAL ONLY</span></div>
-    <p class="deposit-preview-note">This is a nonfunctional visual preview. No deposit address is configured and no funds can be sent.</p>
-    <div class="deposit-code-art" role="img" aria-label="Decorative, non-scannable Bitcoin code artwork"><span class="deposit-code-pattern" aria-hidden="true"></span><span class="deposit-bitcoin-mark" aria-hidden="true">₿</span></div>
+    <div class="reference-panel-heading"><div><p class="section-label">BITCOIN</p><h2 id="deposit-title">Deposit</h2></div></div>
+    <div class="deposit-code-art" role="img" aria-label="Decorative Bitcoin code artwork"><span class="deposit-code-pattern" aria-hidden="true"></span><span class="deposit-bitcoin-mark" aria-hidden="true">₿</span></div>
     <h3 class="deposit-address-title">Bitcoin Address</h3>
-    <p class="deposit-address-copy">Address not configured in this preview.</p>
-    <div class="deposit-address-display"><code>Wallet address unavailable</code><span>UNAVAILABLE</span></div>
-    <div class="deposit-actions"><button class="button button--lime" type="button" disabled aria-disabled="true"><span aria-hidden="true">▢</span>Copy address</button><button class="button button--outline" type="button" disabled aria-disabled="true">View on Mempool</button></div>
+    <p class="deposit-address-copy">Bitcoin · BTC</p>
+    <div class="deposit-address-display"><code data-deposit-address>${bitcoinDepositAddress}</code><span>BTC</span></div>
+    <div class="deposit-actions"><button class="button button--lime" type="button" data-copy-deposit-address><span aria-hidden="true">▢</span>Copy address</button><a class="button button--outline" href="https://mempool.space/address/${bitcoinDepositAddress}" target="_blank" rel="noopener noreferrer">View on Mempool</a></div>
   </article>`;
 
 const cardsPage = () => `${header('cards')}
@@ -467,6 +468,34 @@ const showNotice = (message, variant = 'success', duration = 3600) => {
   window.clearTimeout(noticeTimer);
   noticeTimer = window.setTimeout(() => notice.classList.remove('is-visible'), duration);
 };
+
+const depositCopyButton = document.querySelector('[data-copy-deposit-address]');
+depositCopyButton?.addEventListener('click', async () => {
+  const address = document.querySelector('[data-deposit-address]')?.textContent?.trim();
+  if (!address) return;
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(address);
+    } else {
+      const field = document.createElement('textarea');
+      field.value = address;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.append(field);
+      field.select();
+      const copied = document.execCommand('copy');
+      field.remove();
+      if (!copied) throw new Error('Clipboard unavailable');
+    }
+    const originalMarkup = depositCopyButton.innerHTML;
+    depositCopyButton.innerHTML = '<span aria-hidden="true">✓</span> Copied';
+    showNotice('Address copied to clipboard.', 'success');
+    window.setTimeout(() => { depositCopyButton.innerHTML = originalMarkup; }, 1800);
+  } catch {
+    showNotice('Clipboard unavailable in this browser.', 'error');
+  }
+});
 
 const brandOverlay = document.querySelector('[data-brand-transition]');
 if (brandOverlay) {
