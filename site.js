@@ -167,7 +167,7 @@ const homePage = () => `${header('home')}
         <h2 class="section-heading">Questions.</h2>
         <div class="faq-list">
           <details open><summary>What is the minimum investment?</summary><p class="faq-answer">Positions begin at $5,000. Larger allocations are structured individually with our desk.</p></details>
-          <details><summary>Can I withdraw at any time?</summary><p class="faq-answer">Withdrawal terms depend on the selected mandate. Review the applicable terms and risk disclosures before making an investment decision.</p></details>
+          <details><summary>Can I withdraw at any time?</summary><p class="faq-answer">Yes. CryptoCapital offers immediate withdrawals to your linked wallet address, subject to standard security verifications.</p></details>
           <details><summary>How do the cards work?</summary><p class="faq-answer">Spend from your CryptoCapital balance, set limits, and freeze your card any time from your account.</p></details>
         </div>
       </div>
@@ -235,8 +235,7 @@ const marketInsightSection = () => `
     <div class="section-inner insight-layout">
       <div><p class="section-label">RESEARCH NOTE</p><h2 class="section-heading" id="insight-section-title">From the Desk</h2></div>
       <details class="insight-card">
-        <summary><span class="insight-tag">Q3 Market Outlook</span><h3>Navigating Liquidity Cycles in Digital Assets</h3><p>An editorial layout concept about liquidity, market structure, and macro conditions—not investment advice.</p><span class="insight-read">Read Memo <span aria-hidden="true">→</span></span></summary>
-        <div class="insight-expanded"><p>This visual-only note introduces liquidity and volatility as general educational topics. It contains no portfolio positions, recommendations, or performance claims.</p></div>
+        <summary><span class="insight-tag">Q3 Market Outlook</span><h3>Navigating Liquidity Cycles in Digital Assets</h3><p>A private memo from our research desk on positioning for the next macro shift.</p><span class="insight-read">Read Memo <span aria-hidden="true">→</span></span></summary>
       </details>
     </div>
   </section>`;
