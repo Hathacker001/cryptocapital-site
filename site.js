@@ -97,10 +97,13 @@ const homePage = () => `${header('home')}
               </svg>
             </div>
             <div class="fund-chart-years"><span>2016</span><span>2019</span><span>2022</span><span>2026</span></div>
+            ${annualTrackRecordTable()}
           </article>
         </div>
       </div>
     </section>
+
+    ${marketContextSection()}
 
     <section class="section about-section" aria-labelledby="about-title">
       <div class="section-inner about-layout">
@@ -113,6 +116,8 @@ const homePage = () => `${header('home')}
       </div>
     </section>
 
+    ${partnersSection()}
+
     <section class="section mandates-section">
       <div class="section-inner">
         <div class="section-topline"><div><p class="section-label">02 — Mandates</p><h2 class="section-heading">Where we allocate.</h2></div></div>
@@ -123,6 +128,8 @@ const homePage = () => `${header('home')}
         </div>
       </div>
     </section>
+
+    ${securitySection()}
 
     <section class="section">
       <div class="section-inner card-promo">
@@ -153,6 +160,8 @@ const homePage = () => `${header('home')}
       </div>
     </section>
 
+    ${marketInsightSection()}
+
     <section class="section faq-section">
       <div class="section-inner faq-wrap">
         <h2 class="section-heading">Questions.</h2>
@@ -172,8 +181,77 @@ const homePage = () => `${header('home')}
       <div class="home-footer-contact"><span class="home-footer-label">Office</span><address>1 Capital Square<br />City of London<br />United Kingdom</address></div>
       <div class="home-footer-contact"><span class="home-footer-label">Private enquiries</span><a href="mailto:cryptocapitalfx@aol.com">cryptocapitalfx@aol.com</a></div>
     </div>
-    <div class="home-footer-legal"><span>CryptoCapital Group © 2026</span><p>Digital assets involve significant risk and may not be suitable for all investors. Returns are not guaranteed; you may lose some or all of your invested capital. This material is not investment advice.</p></div>
+    <div class="home-footer-legal"><span>CryptoCapital Group © 2026</span><p>All investing involves risk, including possible loss of principal. Past performance does not guarantee future results.</p></div>
   </footer>`;
+
+const marketContextSection = () => `
+  <section class="section market-context" aria-label="Market context">
+    <div class="section-inner market-context-inner">
+      <span class="market-context-label">MARKET CONTEXT</span>
+      <div class="market-context-list" aria-label="Topics">
+        <span class="market-context-item">Digital assets</span><span class="market-context-item">Macro</span><span class="market-context-item">Private markets</span><span class="market-context-item">Custody systems</span>
+      </div>
+    </div>
+  </section>`;
+
+const partnersSection = () => `
+  <section class="section partners-section" aria-labelledby="partners-title">
+    <div class="section-inner">
+      <div class="section-topline"><div><p class="section-label">THE PEOPLE</p><h2 class="section-heading" id="partners-title">The Partners</h2><p class="section-intro">Fictional, text-only profile concepts. No credentials or employment histories are represented.</p></div></div>
+      <div class="partner-grid">
+        <article class="partner-card"><span class="partner-role">MANAGING PARTNER</span><h3>Marcus Thorne</h3><p>Fictional profile concept.</p><span class="partner-index">01 / 03</span></article>
+        <article class="partner-card"><span class="partner-role">HEAD OF RESEARCH</span><h3>Elena Rostova</h3><p>Fictional profile concept.</p><span class="partner-index">02 / 03</span></article>
+        <article class="partner-card"><span class="partner-role">HEAD OF CUSTODY &amp; SECURITY</span><h3>David Chen</h3><p>Fictional profile concept.</p><span class="partner-index">03 / 03</span></article>
+      </div>
+    </div>
+  </section>`;
+
+const securitySection = () => `
+  <section class="section security-section" aria-labelledby="security-title">
+    <div class="section-inner">
+      <div class="section-topline"><div><p class="section-label">CUSTODY FRAMEWORK</p><h2 class="section-heading" id="security-title">Security &amp; custody considerations</h2><p class="section-intro">Category placeholders only; no current custody, audit, monitoring, or insurance arrangement is asserted.</p></div></div>
+      <div class="security-grid">
+        <article class="security-card"><span class="security-icon" aria-hidden="true">◈</span><span class="security-index">01</span><h3>Cold-storage architecture</h3><p>Specific controls and storage arrangements have not been provided.</p></article>
+        <article class="security-card"><span class="security-icon" aria-hidden="true">◎</span><span class="security-index">02</span><h3>Independent review</h3><p>No auditor, attestation, or review schedule is represented here.</p></article>
+        <article class="security-card"><span class="security-icon" aria-hidden="true">◇</span><span class="security-index">03</span><h3>Insurance scope</h3><p>No provider, policy, or coverage is represented in this visual preview.</p></article>
+      </div>
+    </div>
+  </section>`;
+
+const annualTrackRecordTable = () => `
+  <section class="track-record-card" aria-labelledby="track-record-title">
+    <div class="track-record-heading"><div><p class="chart-overline">REPORTING FORMAT</p><h3 id="track-record-title">Annualized Track Record</h3></div><span class="track-record-state">NOT PROVIDED</span></div>
+    <p class="track-record-note">Performance figures and audit status have not been provided.</p>
+    <div class="track-record-table-wrap"><table class="track-record-table"><thead><tr><th>Year</th><th>Return</th><th>Status</th></tr></thead><tbody>
+      <tr><td>2021</td><td>—</td><td>Not provided</td></tr>
+      <tr><td>2022</td><td>—</td><td>Not provided</td></tr>
+      <tr><td>2023</td><td>—</td><td>Not provided</td></tr>
+      <tr><td>2024</td><td>—</td><td>Not provided</td></tr>
+      <tr><td>2025</td><td>—</td><td>Not provided</td></tr>
+    </tbody></table></div>
+  </section>`;
+
+const marketInsightSection = () => `
+  <section class="section insight-section" aria-labelledby="insight-section-title">
+    <div class="section-inner insight-layout">
+      <div><p class="section-label">RESEARCH NOTE</p><h2 class="section-heading" id="insight-section-title">From the Desk</h2></div>
+      <details class="insight-card">
+        <summary><span class="insight-tag">Q3 Market Outlook</span><h3>Navigating Liquidity Cycles in Digital Assets</h3><p>An editorial layout concept about liquidity, market structure, and macro conditions—not investment advice.</p><span class="insight-read">Read Memo <span aria-hidden="true">→</span></span></summary>
+        <div class="insight-expanded"><p>This visual-only note introduces liquidity and volatility as general educational topics. It contains no portfolio positions, recommendations, or performance claims.</p></div>
+      </details>
+    </div>
+  </section>`;
+
+const bitcoinDepositPanel = () => `
+  <article class="reference-panel deposit-panel" id="deposit" aria-labelledby="deposit-title">
+    <div class="reference-panel-heading"><div><p class="section-label">BITCOIN</p><h2 id="deposit-title">Deposit</h2></div><span class="deposit-preview-pill">VISUAL ONLY</span></div>
+    <p class="deposit-preview-note">This is a nonfunctional visual preview. No deposit address is configured and no funds can be sent.</p>
+    <div class="deposit-code-art" role="img" aria-label="Decorative, non-scannable Bitcoin code artwork"><span class="deposit-code-pattern" aria-hidden="true"></span><span class="deposit-bitcoin-mark" aria-hidden="true">₿</span></div>
+    <h3 class="deposit-address-title">Bitcoin Address</h3>
+    <p class="deposit-address-copy">Address not configured in this preview.</p>
+    <div class="deposit-address-display"><code>Wallet address unavailable</code><span>UNAVAILABLE</span></div>
+    <div class="deposit-actions"><button class="button button--lime" type="button" disabled aria-disabled="true"><span aria-hidden="true">▢</span>Copy address</button><button class="button button--outline" type="button" disabled aria-disabled="true">View on Mempool</button></div>
+  </article>`;
 
 const cardsPage = () => `${header('cards')}
   <main class="cards-page"><div class="cards-page-inner">
@@ -198,11 +276,12 @@ const loginPage = () => `${header('login')}
 
 const dashboardHeader = () => {
   const settingsLinks = route === '/settings' ? '<a href="/">Home</a><a href="/dashboard">Dashboard</a>' : '';
+  const depositLink = route === '/dashboard' ? '<a href="/dashboard#deposit">Deposit</a>' : '';
   return `
   <header class="dashboard-topbar">
     <div class="dashboard-topbar-inner">
       <div class="dashboard-heading"><span>Hi, Eliana</span><h1>Welcome back, Eliana.</h1><p>Good morning</p></div>
-      <nav class="portal-nav" aria-label="Account navigation">${settingsLinks}<a href="/settings">Settings</a><button type="button" data-signout>Sign out</button></nav>
+      <nav class="portal-nav" aria-label="Account navigation">${settingsLinks}${depositLink}<a href="/settings">Settings</a><button type="button" data-signout>Sign out</button></nav>
     </div>
   </header>`;
 };
@@ -265,7 +344,7 @@ const dashboardPage = (showTransition = false) => `${dashboardHeader()}${showTra
         <div class="activity-table-wrap"><table class="activity-table"><thead><tr><th>Date</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>${activityRows()}</tbody></table></div>
       </article>
     </section>
-    <aside class="dashboard-side-column" aria-label="Cards and withdrawals">
+    <aside class="dashboard-side-column" aria-label="Cards, withdrawals, and deposits">
       <article class="reference-panel my-cards-panel">
         <div class="reference-panel-heading"><h2>My cards</h2><span class="card-menu-dots" aria-hidden="true">•••</span></div>
         <div class="dashboard-card-stage"><div data-dashboard-card>${paymentCard('regular', 'Regular')}</div></div>
@@ -283,6 +362,7 @@ const dashboardPage = (showTransition = false) => `${dashboardHeader()}${showTra
         <button class="button button--lime withdrawal-action" type="button" data-withdrawal>Request Withdrawal <span aria-hidden="true">→</span></button>
         <div class="batch-note" id="batch-note"><span class="batch-dot"></span><span><strong>Batch withdrawal in progress</strong><small>Reference B-1042 · settles with next batch cycle · $500,000.00</small></span></div>
       </article>
+      ${bitcoinDepositPanel()}
     </aside>
   </div>${footer()}</main>${withdrawalAuthModal()}`;
 
@@ -325,7 +405,7 @@ if ((route === '/dashboard' || route === '/settings') && localStorage.getItem(au
 }
 
 const initializeHomepageMotion = async () => {
-  const elements = [...document.querySelectorAll('.home-page .cinematic-copy > *, .home-page .cinematic-actions > *, .home-page .hero-content > *, .home-page .section-inner > *, .home-page .hero-floating-tag, .home-page .proof-stat, .home-page .fund-chart-card, .home-page .about-row, .home-page .bank-card, .home-page .mandate-card, .home-page .process-card, .home-page .faq-list details, .home-page .final-cta, .home-footer-inner > *')];
+  const elements = [...document.querySelectorAll('.home-page .cinematic-copy > *, .home-page .cinematic-actions > *, .home-page .hero-content > *, .home-page .section-inner > *, .home-page .hero-floating-tag, .home-page .proof-stat, .home-page .fund-chart-card, .home-page .about-row, .home-page .bank-card, .home-page .mandate-card, .home-page .process-card, .home-page .faq-list details, .home-page .final-cta, .home-footer-inner > *, .home-page .market-context-item, .home-page .partner-card, .home-page .security-card, .home-page .track-record-card, .home-page .insight-card')];
   if (!elements.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   let motionApi = null;
