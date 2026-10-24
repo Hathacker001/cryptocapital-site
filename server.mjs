@@ -12,6 +12,7 @@ const files = new Map([
   ['/site.js', resolve(root, 'site.js')],
   ['/favicon.svg', resolve(publicRoot, 'favicon.svg')],
   ['/manus-routes.json', resolve(publicRoot, 'manus-routes.json')],
+  ['/images/cryptocapital-tower_4d7bfc27.jpg', resolve(publicRoot, 'images/cryptocapital-tower_4d7bfc27.jpg')],
 ]);
 const mime = {
   '.html': 'text/html; charset=utf-8',
@@ -19,6 +20,7 @@ const mime = {
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
+  '.jpg': 'image/jpeg',
 };
 
 createServer(async (req, res) => {

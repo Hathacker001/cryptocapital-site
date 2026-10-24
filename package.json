@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs"
+    "dev": "node server.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node --check site.js && node --check server.mjs && node --check scripts/build.mjs"
   }
 }
